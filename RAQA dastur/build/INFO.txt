@@ -1,0 +1,70 @@
+import sys
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QComboBox, QVBoxLayout, QHBoxLayout
+from PyQt5.QtGui import QPixmap, QPalette, QBrush
+from PyQt5.QtCore import Qt
+
+class AmmoCalculator(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Harbiy Yuk Kalkulyatori")
+        self.setGeometry(100, 100, 800, 600)
+
+        # Orqa fon rasm
+        palette = QPalette()
+        palette.setBrush(QPalette.Background, QBrush(QPixmap("images/background.png")))
+        self.setPalette(palette)
+
+        # Ammo turi
+        self.ammo_label = QLabel("O'q Dori Tanlang:")
+        self.ammo_combo = QComboBox()
+        self.ammo_combo.addItem("O'q Dori A", "images/ammoA.png")
+        self.ammo_combo.addItem("O'q Dori B", "images/ammoB.png")
+        self.ammo_combo.addItem("O'q Dori C", "images/ammoC.png")
+        self.ammo_combo.currentIndexChanged.connect(self.update_ammo_image)
+
+        self.ammo_image = QLabel()
+        self.ammo_image.setFixedSize(200, 200)
+        self.ammo_image.setAlignment(Qt.AlignCenter)
+
+        # Avtomobil turi
+        self.vehicle_label = QLabel("Avtomobil Tanlang:")
+        self.vehicle_combo = QComboBox()
+        self.vehicle_combo.addItem("Kamaz", "images/kamaz.jpg")
+        self.vehicle_combo.addItem("Ural", "images/ural.jpg")
+        self.vehicle_combo.addItem("ZIL", "images/zil.jpg")
+        self.vehicle_combo.currentIndexChanged.connect(self.update_vehicle_image)
+
+        self.vehicle_image = QLabel()
+        self.vehicle_image.setFixedSize(200, 200)
+        self.vehicle_image.setAlignment(Qt.AlignCenter)
+
+        # O'ng va chap tomonlar uchun qatorlar
+        left_layout = QVBoxLayout()
+        left_layout.addWidget(self.ammo_label)
+        left_layout.addWidget(self.ammo_combo)
+        left_layout.addWidget(self.ammo_image)
+
+        right_layout = QVBoxLayout()
+        right_layout.addWidget(self.vehicle_label)
+        right_layout.addWidget(self.vehicle_combo)
+        right_layout.addWidget(self.vehicle_image)
+
+        main_layout = QHBoxLayout()
+        main_layout.addLayout(left_layout)
+        main_layout.addLayout(right_layout)
+
+        self.setLayout(main_layout)
+
+    def update_ammo_image(self):
+        image_path = self.ammo_combo.currentData()
+        self.ammo_image.setPixmap(QPixmap(image_path).scaled(200, 200, Qt.KeepAspectRatio))
+
+    def update_vehicle_image(self):
+        image_path = self.vehicle_combo.currentData()
+        self.vehicle_image.setPixmap(QPixmap(image_path).scaled(200, 200, Qt.KeepAspectRatio))
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = AmmoCalculator()
+    window.show()
+    sys.exit(app.exec_())
